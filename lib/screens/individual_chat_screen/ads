@@ -1,0 +1,29 @@
+return Scaffold(
+      appBar: AppBar(title: Text('User List')),
+      body: Center(
+        child: StreamBuilder<List<List<String>>>(
+          stream: SocketService.userResponse,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const CircularProgressIndicator();
+            }
+
+            final userList = snapshot.data;
+
+            return ListView.builder(
+              itemCount: userList!.length,
+              itemBuilder: (context, index) {
+                final userData = userList[index];
+                final username = userData[0];
+                final socketId = userData[1];
+
+                return ListTile(
+                  title: Text(username),
+                  subtitle: Text(socketId),
+                );
+              },
+            );
+          },
+        ),
+      ),
+    );
